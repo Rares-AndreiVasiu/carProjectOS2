@@ -15,7 +15,7 @@ LDFLAGS = -lm
 
 all: $(BINDIR)/car
 
-$(BINDIR)/car: $(BINDIR)/main.o $(BINDIR)/menu.o $(BINDIR)/utility.o | $(BINDIR)
+$(BINDIR)/car: $(BINDIR)/main.o $(BINDIR)/menu.o $(BINDIR)/utility.o $(BINDIR)/app.o  | $(BINDIR)
 	$(CC) $(LDFLAGS) $^ -o $@
 
 $(BINDIR)/main.o: $(SRCDIR)/main.c | $(BINDIR)
@@ -25,6 +25,9 @@ $(BINDIR)/menu.o: $(SRCDIR)/menu.c | $(BINDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BINDIR)/utility.o: $(SRCDIR)/utility.c | $(BINDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BINDIR)/app.o: $(SRCDIR)/app.c | $(BINDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BINDIR):
