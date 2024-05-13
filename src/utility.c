@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "../inc/utility.h"
 
@@ -202,7 +203,7 @@ char *encrypt(char* pswd, int shift)
 
         char c2 = pswd[i];
 
-        if ('a' <= c && c <= 'z')
+        if ('a' <= pswd[i] && pswd[i] <= 'z')
         {
             value = pswd[i] - 'a';
 
@@ -232,42 +233,36 @@ char *encrypt(char* pswd, int shift)
 
 char *decrypt(char *encrypted, int shift)
 {
-    char *s = (char *)malloc(sizeof(char) * strlen(pswd));
+    char *decrypted = (char *)malloc(strlen(encrypted) + 1);
 
-    if(!s)
+    if (!decrypted)
     {
         perror("malloc");
-
+    
         return NULL;
     }
 
-    for (int i = 0; i < strlen(pswd); ++ i)
+    for (int i = 0; encrypted[i] != '\0'; ++i)
     {
-        int value;
-        char c2 = c;
+        char c = encrypted[i];
 
-        if ('a' <= c && c <= 'z')
+        if (islower(c) || isupper(c))
         {
-            value = c - 'a';
+            int offset = isupper(c) ? 'A' : 'a';
 
-            value = (value + 26 - n) % 26;
-
-            c2 = value + 'a';
+            int value = c - offset;
+            
+            value = (value + 26 - shift) % 26;
+            
+            decrypted[i] = value + offset;
         }
         else
         {
-            if ('A' <= c && c <= 'Z')
-            {
-                value = c - 'A';
-
-                value = (value + 26 - n) % 26;
-
-                c2 = value + 'A';
-            }
+            decrypted[i] = c; 
         }
-
-        s += c2;
     }
 
-    return s;
+    decrypted[strlen(encrypted)] = '\0'; 
+
+    return decrypted;
 }
