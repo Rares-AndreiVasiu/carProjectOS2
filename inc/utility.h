@@ -22,4 +22,8 @@ int getUserOption(int low, int high);
 
 void mySleep(unsigned duration);
 
+char *encrypt(char * pswd, int shift);
+
+char *decrypt(char *encrypted, int shift);
+
 #endif

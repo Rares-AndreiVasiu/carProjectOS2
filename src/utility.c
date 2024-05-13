@@ -184,3 +184,90 @@ void mySleep(unsigned duration)
 
     }while(difftime(now, start) < end);
 }
+
+char *encrypt(char* pswd, int shift)
+{
+    char *s = (char *)malloc(sizeof(char) * strlen(pswd));
+
+    if(!s)
+    {
+        perror("malloc");
+
+        return NULL;
+    }
+
+    for (int i = 0; i < strlen(pswd); ++ i)
+    {
+        int value;
+
+        char c2 = pswd[i];
+
+        if ('a' <= c && c <= 'z')
+        {
+            value = pswd[i] - 'a';
+
+            value = (value + shift) % 26;
+
+            c2 = value + 'a';
+        }
+        else
+        {
+            if ('A' <= pswd[i] && pswd[i] <= 'Z')
+            {
+                value = pswd[i] - 'A';
+
+                value = (value + shift) % 26;
+
+                c2 = value + 'A';
+            }
+        }
+
+        s[i] = c2;
+    }
+
+    s[strlen(pswd)] = '\0';
+
+    return s;
+}
+
+char *decrypt(char *encrypted, int shift)
+{
+    char *s = (char *)malloc(sizeof(char) * strlen(pswd));
+
+    if(!s)
+    {
+        perror("malloc");
+
+        return NULL;
+    }
+
+    for (int i = 0; i < strlen(pswd); ++ i)
+    {
+        int value;
+        char c2 = c;
+
+        if ('a' <= c && c <= 'z')
+        {
+            value = c - 'a';
+
+            value = (value + 26 - n) % 26;
+
+            c2 = value + 'a';
+        }
+        else
+        {
+            if ('A' <= c && c <= 'Z')
+            {
+                value = c - 'A';
+
+                value = (value + 26 - n) % 26;
+
+                c2 = value + 'A';
+            }
+        }
+
+        s += c2;
+    }
+
+    return s;
+}
