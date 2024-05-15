@@ -226,7 +226,7 @@ char *encrypt(char* pswd, int shift)
         s[i] = c2;
     }
 
-    s[strlen(pswd)] = '\0';
+    s[strlen(pswd)] = '\0'; 
 
     return s;
 }
