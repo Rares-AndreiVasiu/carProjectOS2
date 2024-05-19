@@ -5,12 +5,16 @@
 #include "../inc/app.h"
 #include "../inc/utility.h"
 
+#include "../inc/menu.h"
+
 void runApp()
 {
     int option = 1;
 
     do
     {
+        entraceMenu();
+
         #if DBG == 1
             printf("Hello there stranger!\n");
         #endif
@@ -22,7 +26,9 @@ void runApp()
         {
             case 1:
             {
-                printf("Here we login!\n");
+                // printf("Here we login!\n");
+
+                loginHandler();
 
                 break;
             }
@@ -45,6 +51,7 @@ void runApp()
 
             default:
             {
+                clearScreen();
                 break;
             }
         }

@@ -10,3 +10,9 @@ void entraceMenu()
 
     printf("Exit:                   3\n");
 }
+
+
+void loginMenu()
+{
+    printf("#### LOGIN ####\n");
+}

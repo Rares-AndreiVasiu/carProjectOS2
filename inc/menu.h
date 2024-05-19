@@ -3,6 +3,8 @@
 
 void entraceMenu();
 
+void loginMenu();
+
 void mainMenu();
 
 #endif

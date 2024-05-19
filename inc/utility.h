@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <time.h>
 
+char filepath[] = "../resources/login.csv";
+
 #define OK         0
 #define NO_INPUT   1
 #define TOO_LONG   2
@@ -25,5 +27,13 @@ void mySleep(unsigned duration);
 char *encrypt(char * pswd, int shift);
 
 char *decrypt(char *encrypted, int shift);
+
+void loginHandler();
+
+void clearScreen();
+
+int getAccountFromCSV(const char *filename, char *email, char *username);
+
+void extractEmailAndUsername(const char *csvLine, char *email, char *username);
 
 #endif
