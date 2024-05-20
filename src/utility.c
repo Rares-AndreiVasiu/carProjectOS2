@@ -317,7 +317,7 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
 
         data[read] = '\0';
 
-        // printf("Line %d: %s", linesRead, data);
+        printf("Line %d: %s\n", linesRead, data);
 
         char *em = NULL;
 
@@ -353,7 +353,9 @@ void extractEmailAndUsername(const char *csvLine, char *email, char *username)
     char *lineCopy = strdup(csvLine); 
 
     token = strtok(lineCopy, ",");
-    
+
+    printf("email: %s\n", token);   
+
     if (token) 
     {
         strncpy(email, token, strlen(token));
