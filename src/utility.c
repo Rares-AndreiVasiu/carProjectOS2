@@ -268,6 +268,8 @@ char *decrypt(char *encrypted, int shift)
 
 int getAccountFromCSV(const char *filename, char *email, char *username) 
 {
+    // printf("Hello\n");
+
     FILE *fp = fopen(filename, "r");
 
     if (!fp) 
@@ -287,8 +289,11 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
 
     while ((read = getline(&line, &len, fp)) != -1) 
     {
+        printf("Line read: %s\n", line);
+
         if (linesRead == 0) 
         {
+            printf("We are are at header line\n");
             // Skip the header line
             ++linesRead;
             
@@ -318,7 +323,11 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
 
         char *usr = NULL;
 
+        printf("Lines read: %d\n", linesRead);
+        
         extractEmailAndUsername(data, em, usr);
+
+        printf("Email address %s\n, username %s\n", em, usr);
 
         if(strcmp(username, usr) == 0 && strcmp(email, em) == 0)
         {
@@ -334,7 +343,7 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
 
     free(line);
 
-    return (linesRead > 1) ? linesRead - 1 : 0;
+    return (linesRead > 1) ? 0 : -1;
 }
 
 void extractEmailAndUsername(const char *csvLine, char *email, char *username) 
@@ -434,10 +443,18 @@ void loginHandler()
         mySleep(1);
 
     } while (!flag);
+    
+    char filepath[] = "../resources/login.csv";
 
     if(getAccountFromCSV(filepath, email, username) == 0)
     {
-        
+        //user exists in database already
+        printf("User already\n");
+    }
+    else 
+    {
+        //user does not exist in database
+        printf("User does not exist\n");
     }
 }
 

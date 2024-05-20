@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-char filepath[] = "../resources/login.csv";
-
 #define OK         0
 #define NO_INPUT   1
 #define TOO_LONG   2
