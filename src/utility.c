@@ -266,10 +266,8 @@ char *decrypt(char *encrypted, int shift)
     return decrypted;
 }
 
-int getAccountFromCSV(const char *filename, char *email, char *username) 
+int getAccountFromCSV(const char *filename,  char *email,  char *username) 
 {
-    // printf("Hello\n");
-
     FILE *fp = fopen(filename, "r");
 
     if (!fp) 
@@ -284,19 +282,17 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
     size_t len = 0;
     
     int read;
-
+    
     int linesRead = 0;
 
     while ((read = getline(&line, &len, fp)) != -1) 
     {
-        printf("Line read: %s\n", line);
+        printf("Line read: %s", line);
 
         if (linesRead == 0) 
         {
-            printf("We are are at header line\n");
-            // Skip the header line
             ++linesRead;
-            
+
             continue;
         }
 
@@ -317,20 +313,16 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
 
         data[read] = '\0';
 
-        printf("Line %d: %s\n", linesRead, data);
+        char em[256] = {0}; 
+        char usr[256] = {0};
 
-        char *em = NULL;
-
-        char *usr = NULL;
-
-        printf("Lines read: %d\n", linesRead);
-        
         extractEmailAndUsername(data, em, usr);
-
-        printf("Email address %s\n, username %s\n", em, usr);
 
         if(strcmp(username, usr) == 0 && strcmp(email, em) == 0)
         {
+            free(data);
+            free(line);
+            fclose(fp);
             return 0;
         }
 
@@ -342,37 +334,13 @@ int getAccountFromCSV(const char *filename, char *email, char *username)
     fclose(fp);
 
     free(line);
-
+    
     return (linesRead > 1) ? 0 : -1;
 }
 
 void extractEmailAndUsername(const char *csvLine, char *email, char *username) 
 {
-    char *token;
-
-    char *lineCopy = strdup(csvLine); 
-
-    token = strtok(lineCopy, ",");
-
-    printf("email: %s\n", token);   
-
-    if (token) 
-    {
-        strncpy(email, token, strlen(token));
-
-        email[strlen(token)] = '\0';
-    }
-
-    token = strtok(NULL, ",");
-
-    if (token) 
-    {
-        strncpy(username, token, strlen(token));
-
-        username[strlen(token)] = '\0';
-    }
-
-    free(lineCopy); 
+    sscanf(csvLine, "%[^,],%s", email, username); 
 }
 
 void clearScreen()
