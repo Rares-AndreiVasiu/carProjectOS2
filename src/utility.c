@@ -266,7 +266,17 @@ char *decrypt(char *encrypted, int shift)
     return decrypted;
 }
 
-int getAccountFromCSV(const char *filename,  char *email,  char *username) 
+void removeNewline(char *line)
+{
+    char *newline = strchr(line, '\n');
+
+    if(newline != NULL)
+    {
+        *newline = '\0';
+    }
+}
+
+int getAccountFromCSV(const char *filename,  char *email,  char *password) 
 {
     FILE *fp = fopen(filename, "r");
 
@@ -287,7 +297,9 @@ int getAccountFromCSV(const char *filename,  char *email,  char *username)
 
     while ((read = getline(&line, &len, fp)) != -1) 
     {
-        printf("Line read: %s", line);
+        removeNewline(line);
+
+        printf("Line read: %s\n", line);
 
         if (linesRead == 0) 
         {
@@ -311,18 +323,28 @@ int getAccountFromCSV(const char *filename,  char *email,  char *username)
 
         strncpy(data, line, read);
 
+        printf("here we have the data: %s\n", data);    
+
         data[read] = '\0';
 
         char em[256] = {0}; 
-        char usr[256] = {0};
 
-        extractEmailAndUsername(data, em, usr);
+        char pswd[256] = {0};
 
-        if(strcmp(username, usr) == 0 && strcmp(email, em) == 0)
+        extractEmailAndPassword(data, em, pswd);
+
+        printf("email and password found in the csv: %s %s\n", em, pswd);
+
+        printf("email and password from the user: %s %s\n", email, password);
+
+        if(strcmp(password, pswd) == 0 && strcmp(email, em) == 0)
         {
             free(data);
+
             free(line);
+            
             fclose(fp);
+            
             return 0;
         }
 
@@ -335,12 +357,43 @@ int getAccountFromCSV(const char *filename,  char *email,  char *username)
 
     free(line);
     
-    return (linesRead > 1) ? 0 : -1;
+    return -1;
 }
 
-void extractEmailAndUsername(const char *csvLine, char *email, char *username) 
+void extractEmailAndPassword(const char *csv_line, char *email, char *password) 
 {
-    sscanf(csvLine, "%[^,],%s", email, username); 
+     // Ensure email and password are cleared before use
+    email[0] = '\0';
+
+    password[0] = '\0';
+
+    // Use sscanf to parse the CSV line
+    sscanf(csv_line, "%255[^,],%*[^,],%255s", email, password);
+    // char line_copy[MAX_LENGTH]; 
+
+    // strncpy(line_copy, csv_line, sizeof(line_copy));
+    
+    // line_copy[sizeof(line_copy) - 1] = '\0';
+
+    // char *token = strtok(line_copy, ",");
+
+    // if (token != NULL) 
+    // {
+    //     strncpy(email, token, MAX_LENGTH);
+    
+    //     email[MAX_LENGTH] = '\0'; 
+    // }
+
+    // token = strtok(NULL, ",");
+
+    // token = strtok(NULL, ",");
+
+    // if (token != NULL) 
+    // {
+    //    strncpy(password, token, MAX_LENGTH);
+    
+    //     password[MAX_LENGTH] = '\0';
+    // }
 }
 
 void clearScreen()
@@ -350,9 +403,9 @@ void clearScreen()
 
 void loginHandler()
 {
-    bool flag = false, flagEmail = false, flagUsername = false;
+    bool flag = false, flagEmail = false, flagPassword = false;
 
-    char email[MAX_LENGTH], username[MAX_LENGTH];
+    char email[MAX_LENGTH], password[MAX_LENGTH];
 
     do
     { 
@@ -385,28 +438,28 @@ void loginHandler()
 
         do
         {
-            int rc = getLine("Enter the username: ", username, MAX_LENGTH);
+            int rc = getLine("Enter the password: ", password, MAX_LENGTH);
 
             if(rc == NO_INPUT)
             {
                 //we got no input
-                flagUsername = false;
+                flagPassword = false;
             }
 
             if(rc == TOO_LONG)
             {
                 //input too long
-                flagUsername = false;
+                flagPassword = false;
             }
 
             if(rc == OK || rc == SMALL_BUFF)
             {
-                flagUsername = true;
+                flagPassword = true;
             }
 
-        } while (!flagUsername);
+        } while (!flagPassword);
 
-        printf("Email: %s, username: %s\n", email, username);
+        printf("Email: %s, password: %s\n", email, password);
 
         flag = true;
 
@@ -416,7 +469,7 @@ void loginHandler()
     
     char filepath[] = "../resources/login.csv";
 
-    if(getAccountFromCSV(filepath, email, username) == 0)
+    if(getAccountFromCSV(filepath, email, password) == 0)
     {
         //user exists in database already
         printf("User already\n");

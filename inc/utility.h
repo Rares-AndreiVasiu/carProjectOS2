@@ -30,8 +30,10 @@ void loginHandler();
 
 void clearScreen();
 
-int getAccountFromCSV(const char *filename, char *email, char *username);
+int getAccountFromCSV(const char *filename, char *email, char *password);
 
-void extractEmailAndUsername(const char *csvLine, char *email, char *username);
+void extractEmailAndPassword(const char *csvLine, char *email, char *password);
+
+void removeNexline(char *line);
 
 #endif
