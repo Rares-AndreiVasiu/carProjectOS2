@@ -1,0 +1,11 @@
+model,manufacturer,vin
+320d,BMW,1
+clio4,Renault,2
+megane,Renault,3
+540ld,BMW,4
+bmw,bmw,3
+q,q,1
+1,1,1
+merc,merc,1
+merc,merc#,4
+C,Mercedes,11

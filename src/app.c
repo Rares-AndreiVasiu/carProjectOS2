@@ -35,12 +35,47 @@ void runApp()
 
             case 2:
             {
+                // create account
                 printf("Here we create an account!\n");
+
+                createAccountHandler();
                 
                 break;
             }
 
             case 3:
+            {
+                //rent a car
+                printf("Rent a car!\n");
+
+                rentalHandler();
+
+                break;
+            }
+
+            case 4:
+            {
+                //add car
+
+                printf("we add a new rental car\n");
+
+                addCarHandler();
+
+                break;
+            }
+
+            case 5:
+            {
+                //repair defected car
+
+                printf("we repair a poor car\n");
+
+                repairCarHandler();
+
+                break;
+            }
+
+            case 6:
             {
                 printf("Here we exit the app!\n");
 
@@ -52,6 +87,7 @@ void runApp()
             default:
             {
                 clearScreen();
+
                 break;
             }
         }

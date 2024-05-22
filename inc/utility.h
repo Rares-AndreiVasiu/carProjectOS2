@@ -10,9 +10,11 @@
 #define SMALL_BUFF 3
 
 #define LOW_BOUND 1
-#define UPPER_BOUND_ENTRACE 3
+#define UPPER_BOUND_ENTRACE 6
 
 #define MAX_LENGTH 4096
+
+#define NO_THREADS 16
 
 bool checkUserInputOptionMenu(char *buff, int low, int high, int *option);
 
@@ -35,5 +37,13 @@ int getAccountFromCSV(const char *filename, char *email, char *password);
 void extractEmailAndPassword(const char *csvLine, char *email, char *password);
 
 void removeNexline(char *line);
+
+void rentalHandler();
+
+void createAccountHandler();
+
+void addCarHandler();
+
+void repairCarHandler();
 
 #endif
